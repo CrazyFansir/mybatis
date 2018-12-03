@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mapper.UserMapper">
+    <!--基本类型-->
+    <select id="selectUserNameById" resultType="string">
+        select username from j11_user_t where id = #{id}
+    </select>
+    <select id="selectCount" resultType="_int">
+        select count(*) from j11_user_t
+    </select>
+    <!--pojo类型-->
+    <select id="selectUsers" resultType="user">
+        select id,username,password,email,gender,age as userage from j11_user_t where username = #{username}
+    </select>
+    <!--resultMap-->
+    <!--column 来源于数据的列-->
+    <!--property 来源于pojo的参数名-->
+    <resultMap id="userMap" type="user">
+        <id column="id"  property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <result column="age" property="userage"/>
+    </resultMap>
+    <select id="selectUsers2" resultMap="userMap" >
+        select id,username,password,email,gender,age from j11_user_t where username = #{username}
+    </select>
+
+    <resultMap id="j11beanMap" type="j11bean">
+        <result column="id" property="param1"/>
+        <result column="username" property="param2"/>
+        <result column="password" property="param3"/>
+        <result column="email" property="param4"/>
+        <result column="gender" property="param5"/>
+    </resultMap>
+
+    <select id="selectUsers3" resultMap="j11beanMap" >
+        select id,username,password,email,gender,age from j11_user_t where username = #{username}
+    </select>
+
+    <!--where 标签-->
+    <select id="selectUserById" resultType="user">
+        select <include refid="mysql123"/>
+        <where>
+            and id = #{id}
+        </where>
+
+    </select>
+    <!--sql标签-->
+    <select id="selectUserByIdIf" resultType="user">
+        select  <include refid="mysql123"/>
+        <where>
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="age != 0">
+                <include refid="ageif"/>
+            </if>
+        </where>
+    </select>
+    <sql id="mysql123">
+        id,username,password,gender,age as userage from j11_user_t
+    </sql>
+    <sql id="ageif">
+        and age = #{age}
+    </sql>
+    <!--去查询或者插入一个pojo的时候-->
+    <sql id="baseSql">
+        id,username,password,email,gender,age
+    </sql>
+    <!--<insert id="insertUser" >
+        insert into j11_user_t ( <include refid="baseSql"/> ) values ()
+    </insert>-->
+    <!--foreach标签-->
+    <insert id="insertUserList" >
+        insert into j11_user_t (<include refid="baseSql"/> ) values 
+        <foreach collection="users" item="userz" separator="," index="indexz">
+            (#{userz.id},#{userz.username},#{userz.password},#{userz.email},#{userz.gender},#{indexz})
+        </foreach>
+    </insert>
+    <insert id="insertUserList2" >
+        insert into j11_user_t (<include refid="baseSql"/> ) values
+        <foreach collection="list" item="userz" separator="," index="indexz">
+            (#{userz.id},#{userz.username},#{userz.password},#{userz.email},#{userz.gender},#{indexz})
+        </foreach>
+    </insert>
+    <select id="selectUserIdIn" resultType="user">
+        select id,username,password,gender,age as userage from j11_user_t
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")" >
+            #{id}
+        </foreach>
+
+    </select>
+
+    <insert id="insertUserArray" >
+        insert into j11_user_t (<include refid="baseSql"/> ) values
+        <foreach collection="users" item="userz" separator="," index="indexz">
+            (#{userz.id},#{userz.username},#{userz.password},#{userz.email},#{userz.gender},#{indexz})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mapper.CourceMapper">
+    <resultMap id="courceMap" type="com.cskaoyan.bean.Cource">
+        <result column="id" property="id"/>
+        <result column="cource_name" property="courceName"/>
+        <collection property="students" ofType="com.cskaoyan.bean.Student">
+            <result column="stuId" property="id"/>
+            <result column="student_name" property="studentName"/>
+            <result column="room_number" property="roomNumber"/>
+            <result column="age" property="age"/>
+            <result column="phone_number" property="phoneNumber"/>
+        </collection>
+    </resultMap>
+    <select id="selectCourceById" resultMap="courceMap">
+        SELECT 
+         cource.id,
+         cource.cource_name,
+         stu.id as stuId,stu.student_name,stu.age,stu.room_number,stu.phone_number
+         from j11_cource_t cource 
+        left JOIN j11_course_student_relation_t rela ON	cource.id = rela.cource_id 
+        LEFT JOIN j11_student_t stu on rela.student_id = stu.id 
+        where cource.id =#{id}
+    </select>
+    <select id="selectCources" resultMap="courceMap">
+        SELECT
+         cource.id,
+         cource.cource_name,
+         stu.id as stuId,stu.student_name,stu.age,stu.room_number,stu.phone_number
+         from j11_cource_t cource
+        left JOIN j11_course_student_relation_t rela ON	cource.id = rela.cource_id
+        LEFT JOIN j11_student_t stu on rela.student_id = stu.id
+    </select>
+
+</mapper>

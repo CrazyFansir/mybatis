@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mapper.ClazzMapper">
+    <resultMap id="classMap" type="com.cskaoyan.bean.Clazz">
+        <result column="class_name" property="className"/>
+        <result column="student_number" property="studentNumber"/>
+    </resultMap>
+    <select id="selectClazzById" resultMap="classMap">
+        select id,class_name,student_number,goal from j11_clazz_t where id = #{id}
+    </select>
+    <!--通过两次查询来做的一对多查询-->
+    <resultMap id="classMap2" type="clazz">
+        <result column="id" property="id"/>
+        <result column="class_name" property="className"/>
+        <result column="student_number" property="studentNumber"/>
+        <result column="goal" property="goal"/>
+        <collection property="studentList" column="id"
+                    select="com.cskaoyan.mapper.StudentMapper.selectStudentsByClassId"/>
+    </resultMap>
+    <select id="selectClazzAndStudentList" resultMap="classMap2">
+        select id,class_name,student_number,goal from j11_clazz_t where id = #{id}
+    </select>
+    <!--通过连接查询来做的一对多查询-->
+    <resultMap id="classMap3" type="clazz">
+        <result column="id" property="id"/>
+        <result column="class_name" property="className"/>
+        <result column="student_number" property="studentNumber"/>
+        <result column="goal" property="goal"/>
+        <collection property="studentList" ofType="com.cskaoyan.bean.Student">
+            <result column="stu_id" property="id"/>
+            <result column="student_name" property="studentName"/>
+            <result column="room_number" property="roomNumber"/>
+            <result column="age" property="age"/>
+            <result column="phone_number" property="phoneNumber"/>
+        </collection>
+    </resultMap>
+    <select id="selectClazzAndStudentList3" resultMap="classMap3">
+        SELECT
+        c.id,c.class_name,c.student_number,c.goal,
+        stu.id as stu_id,
+        stu.student_name,stu.age,stu.room_number,stu.phone_number
+        from j11_clazz_t c LEFT JOIN j11_student_t stu on c.id = stu.class_id
+        where c.id = #{id}
+    </select>
+    <!--通过collect的select 进行两次查询-->
+    <select id="selectClazzList" resultMap="classMap2">
+        select id,class_name,student_number,goal from j11_clazz_t limit 30;
+    </select>
+
+    <!--通过连接查询查一对多-->
+    <select id="selectClazzList2" resultMap="classMap3">
+        SELECT
+        c.id,c.class_name,c.student_number,c.goal,
+        stu.id as stu_id,
+        stu.student_name,stu.age,stu.room_number,stu.phone_number
+        from j11_clazz_t c LEFT JOIN j11_student_t stu on c.id = stu.class_id limit 30
+    </select>
+
+</mapper>

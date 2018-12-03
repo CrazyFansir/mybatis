@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mapper.UserMapper">
+    <!--基本类型-->
+    <select id="selectUserById" resultType="user">
+        select * from j11_user_t where id = '${value}'
+    </select>
+    <select id="selectUserById2" parameterType="string" resultType="user">
+        select * from j11_user_t where id = #{idxxxx}
+    </select>
+    <!--javabean-->
+    <insert id="insertUser" parameterType="user" >
+        INSERT INTO
+        `j11_user_t`
+        (id,username,password,gender,email,age)
+          VALUES
+        (replace(UUID(),'-',''),#{username},#{password},#{gender},#{email},#{age})
+    </insert>
+    <insert id="insertUser2" parameterType="user" >
+        INSERT INTO
+        `j11_user_t`
+        (id,username,password,gender,email,age)
+          VALUES
+        (replace(UUID(),'-',''),#{user2.username},#{user2.password},#{user2.gender},#{user2.email},#{user2.age})
+    </insert>
+
+    <!--传入两个参数-->
+    <update id="updateUserById" >
+        update j11_user_t set username = #{param1.username} ,password = #{param1.password} where id = #{param2}
+    </update>
+    <update id="updateUserById2" >
+        update j11_user_t set username = #{param1} ,password = #{param2} where id = #{param3}
+    </update>
+    <!--传入两个以及多个参数 （通过注解的方式）-->
+    <update id="updateUserByIdByAnno">
+        update j11_user_t set username = #{userz.username} ,password = #{userz.password} where id = #{idz}
+    </update>
+    <update id="updateUserById2ByAnno">
+        update j11_user_t set username = #{usernamez} ,password = #{passwordz} where id = #{idz}
+    </update>
+    <!--updateUserByIdByMap 未加注解和加注解-->
+    <update id="updateUserByIdByMap" >
+        update j11_user_t set username = #{param1.username} ,password = #{param1.password} where id = #{param2}
+    </update>
+    <update id="updateUserById2ByMap">
+        update j11_user_t set username = #{mapz.username} ,password = #{mapz.password} where id = #{idx}
+    </update>
+</mapper>

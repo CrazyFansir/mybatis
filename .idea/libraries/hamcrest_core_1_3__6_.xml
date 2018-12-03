@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="hamcrest-core-1.3 (6)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Demo5/lib/hamcrest-core-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Demo5/lib/junit-4.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Demo5/lib/mybatis-3.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Demo5/lib/mysql-connector-java-8.0.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+<mapper namespace="mynamespace">
+-->
+<mapper namespace="com.cskaoyan.mapper.UserMapper">
+    <select id="selectUser" parameterType="_int" resultType="user">
+        select * from j11_user_t where age = #{age}
+    </select>
+    <!--查询结果集的时候用的对象-->
+    <select id="selectUsers" resultType="com.cskaoyan.bean.User">
+        select * from  j11_user_t where username = #{name}
+    </select>
+    <insert id="insertUser"  >
+        INSERT INTO
+    `j11_user_t`
+    (id,username,password,gender,email,age)
+      VALUES
+    (replace(UUID(),'-',''),#{username},#{password},#{gender},#{email},#{age})
+    </insert>
+    <update id="updateUser" parameterType="com.cskaoyan.bean.User" >
+        UPDATE j11_user_t set gender = #{gender} where id = #{id}
+    </update>
+    <delete id="deleteUser" >
+        delete  from j11_user_t where id = #{aa}
+    </delete>
+    <insert id="insertUserbyMap">
+        INSERT INTO
+    `j11_user_t`
+    (id,username,password,email)
+      VALUES
+    (replace(UUID(),'-',''),#{username},#{password},#{email})
+    </insert>
+    <!--第二节课内容-->
+    <select id="selectUserById2" parameterType="string" resultType="user">
+        select * from j11_user_t where id = #{aaa}
+    </select>
+</mapper>

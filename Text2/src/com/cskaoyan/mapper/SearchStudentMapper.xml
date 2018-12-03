@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cskaoyan.mapper.SearchStudentMapper">
+    <resultMap id="studentMap" type="com.cskaoyan.bean.Student">
+        <result column="id" property="id"/>
+        <result column="student_name" property="studentName"/>
+        <result column="room_number" property="roomNumber"/>
+        <result column="age" property="age"/>
+        <result column="class_id" property="classId"/>
+        <result column="phone_number" property="phoneNumber"/>
+    </resultMap>
+    <select id="searchStudents" resultMap="studentMap">
+        select id,student_name,age,room_number,phone_number,class_id from j11_student_t
+        <where>
+            <if test="student.id != null" >
+                id like #{student.id}
+            </if>
+            <if test="student.studentName!=null">
+                and   student_name like #{student.studentName}
+            </if>
+            <if test="student.age!=0">
+                and   age = #{student.age}
+            </if>
+            <if test="student.roomNumber!=0">
+                and room_number = #{student.roomNumber}
+            </if>
+            <if test="student.phoneNumber!=null">
+                and phone_number like #{student.phoneNumber}
+            </if>
+            <if test="student.classId!=null">
+                and class_id like #{student.classId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>
